@@ -49,7 +49,7 @@ ki=0.48; % earlier estabilished minimum value of ki
 
 %------------Q(ki) with kp and Ts as parameter-----------%
 figure;
-ki_list=0.4:0.02:0.5;
+ki_list=0.4:0.01:0.5;
 w=zeros(1,size(ki_list,2));
 for j= 1:size(ki_list,2)
 ki=ki_list(j);
@@ -58,7 +58,7 @@ txt = ['ki = ',num2str(ki)];
 hold on
 grid on
 plot(ans.uchyb2,'DisplayName',txt);
-w(j)=getdatasamples(ans.uchyb2,501);
+w(j)=ans.uchyb2(end,1);
 end 
 %xlim([49.7 50])% ograniczanie x dla uchybów w przynliżeniu
 legend show;
@@ -67,5 +67,7 @@ hold off;
 figure;
 plot(ki_list,w,'-x');
 grid on
+xlabel('ki')
+ylabel('Q(ki)')
 legend show
 %---------------------------END--------------------------%
