@@ -1,7 +1,7 @@
 clear;
 clc;
 Ts = 0.1; % sample time
-Ts_list = [0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1,3]; % sample time list
+Ts_list = [0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.5, 1]; % sample time list
 sys_c = tf(1,[1,3,3,1]);  % continuous transfer fcn for object
 sys_d = c2d(sys_c,Ts); % discrete transfer fcn for object
 % extracting numerators and denominators
@@ -46,10 +46,17 @@ ki=0.48; % earlier estabilished minimum value of ki
 % end 
 % legend;
 %---------------------END--------------------------------%
+figure;
+for i= 1:size(Ts_list,2)
+Ts = Ts_list(i)
+
+sys_d = c2d(sys_c,Ts); % discrete transfer fcn for object
+% extracting numerators and denominators
+[d_numerator, d_denominator] = tfdata(sys_d, 'v');
 
 %------------Q(ki) with kp and Ts as parameter-----------%
-figure;
-ki_list=0.4:0.01:0.5;
+%figure;
+ki_list=0.2:0.02:0.5;
 w=zeros(1,size(ki_list,2));
 for j= 1:size(ki_list,2)
 ki=ki_list(j);
@@ -57,17 +64,20 @@ sim('z4_discPI.slx');
 txt = ['ki = ',num2str(ki)]; 
 hold on
 grid on
-plot(ans.uchyb2,'DisplayName',txt);
+%plot(ans.uchyb2,'DisplayName',txt);
 w(j)=ans.uchyb2(end,1);
 end 
 %xlim([49.7 50])% ograniczanie x dla uchybów w przynliżeniu
-legend show;
-hold off;
+% legend show;
+% hold off;
 
-figure;
+
 plot(ki_list,w,'-x');
+hold on;
 grid on
 xlabel('ki')
 ylabel('Q(ki)')
 legend show
 %---------------------------END--------------------------%
+
+end
