@@ -5,22 +5,36 @@
 
 %--------------------------------------------------------------------------
 clear all;
-
+clc
 theta_r = [0.6;0.8;0.5;0.9];
-N=10000;
+N=1000;
 U = rand(N,1)*20;
 P=eye(4);
 theta = [0;0;0;0];
-Y=0;
-V = [0;0]; %[Vn-1 Vn-2]
-for i=2:1:N  
-    phi = [V(1);V(2);U(i);U(i-1)]; %wektor pionowy
-    Y = (phi')*theta_r+rand()-0.5; %skalar
+%Y=zeros(1,N)
+Y=rand(N,1)*20;
+a1 = zeros(1,N);
+a2 = zeros(1,N);
+b1 = zeros(1,N);
+b2 = zeros(1,N);
+phi = [0;0;0;0];
+for n=2:1:N  
+    phi = [Y(n);Y(n-1);U(n);U(n-1)];
+    Y(n) = (phi')*theta_r+rand()-0.5;
     P = P-(P*phi*(phi')*P)/(1+(phi')*P*phi);
-    theta = theta+P*phi*(Y-(phi')*theta);
-    V(2) = V(1);
-    V(1) = phi;
-    
+    theta = theta+P*phi*(Y(n)-(phi')*theta);
+    a1(n) = theta(1);
+    a2(n) = theta(2);
+    b1(n) = theta(3);
+    b2(n) = theta(4);
+    %Y(n+1) = (phi')*theta_r+rand()-0.5;
 end
 theta'
-
+% figure
+% hold on;
+% grid on;
+% plot (1:N,a1);
+% plot (1:N,a2);
+% plot (1:N,b1);
+% plot (1:N,b2);
+%plot(1:N,Y);
