@@ -7,8 +7,12 @@
 clear all;
 clc
 theta_r = [0.6;0.8;0.5;0.9];
-N=1000;
+N=10000;
 U = rand(N,1)*20;
+%t = 0:1:N-1;
+%U = sin(t);
+% figure
+% plot(t,U);
 P=eye(4);
 theta = [0;0;0;0];
 %Y=zeros(1,N)
@@ -20,7 +24,7 @@ b2 = zeros(1,N);
 phi = [0;0;0;0];
 for n=2:1:N  
     phi = [Y(n);Y(n-1);U(n);U(n-1)];
-    Y(n) = (phi')*theta_r+rand()-0.5;
+    Y(n) = (phi')*theta_r+rand();%-0.5; %usrenianie szumu tym -0.5
     P = P-(P*phi*(phi')*P)/(1+(phi')*P*phi);
     theta = theta+P*phi*(Y(n)-(phi')*theta);
     a1(n) = theta(1);
