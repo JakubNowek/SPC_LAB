@@ -31,14 +31,13 @@ for n=2:1:N
     a2(n) = theta(2);
     b1(n) = theta(3);
     b2(n) = theta(4);
-    %Y(n+1) = (phi')*theta_r+rand()-0.5;
 end
 theta'
-% figure
-% hold on;
-% grid on;
-% plot (1:N,a1);
-% plot (1:N,a2);
-% plot (1:N,b1);
-% plot (1:N,b2);
+figure
+hold on;
+grid on;
+plot (1:N,a1);
+plot (1:N,a2);
+plot (1:N,b1);
+plot (1:N,b2);
 %plot(1:N,Y);
