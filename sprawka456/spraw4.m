@@ -59,57 +59,57 @@ ki=0.48; % earlier estabilished minimum value of ki
 % ylabel('Q')
 % %---------------------END--------------------------------%
 
-% %-----------------------MAIN TASK------------------------%
-% %-for different sample times and const kp=3, plot Q(ki)--%
-% 
-% % for this to work properly you need to change uchyb2 block from Timeseries
-% % to array
+%-----------------------MAIN TASK------------------------%
+%-for different sample times and const kp=3, plot Q(ki)--%
 
-% ki_list=0.4:0.01:0.8; %range of ki
-% % ki_list=0.35:0.01:0.6; %range of ki for only one chosen Ts 
-% w=zeros(size(ki_list,2),2); %array of final values of integral of square error
-% figure;
-% for i= 1:size(Ts_list,2)
-%     
-% Ts = Ts_list(i)
-% sys_d = c2d(sys_c,Ts); % discrete transfer fcn for object
-% % extracting numerators and denominators
-% [d_numerator, d_denominator] = tfdata(sys_d, 'v');
-% 
-% %------------Q(ki) with kp and Ts as parameter-----------%
-% figure;
-% 
-% for j= 1:size(ki_list,2)
-% ki=ki_list(j);
-% sim('z4_discPI.slx');
-% %txt = ['ki = ',num2str(ki)]; 
-% hold on
-% grid on
-% %plot(ans.uchyb2,'DisplayName',txt); %error plots depending on ki
-% w(j,1)=ans.uchyb2(end,1);
-% w(j,2)=ki;
-% end 
-% % xlim([49.7 50])% limiting x axis
-% % legend show;
-% % hold off;
-% [y,x]= min(w)
-% minimum = [w(x(1),2),y(1)] % smallest value of x
-% txt = ['Ts = ',num2str(Ts),', min = ',num2str(minimum(2))];
-% plot(w(:,2),w(:,1),'-*','DisplayName',txt); % plot function 
-% point = plot(minimum(1),minimum(2),'x'); % mark on the plot the min points
-% hold on;
-% grid on
-% xlabel('ki')
-% ylabel('Q(ki)')
-% point.Annotation.LegendInformation.IconDisplayStyle = 'off';
-% legend;
-% 
-% %w(:,1) - first column of vector w (y coordinates)
-% %w(:,2) - seond column of vector w (x coordinates)
-% 
-% 
-% %---------------------------END--------------------------%
-% 
-% end
-% 
-% %---------------------------END--------------------------%
+% for this to work properly you need to change uchyb2 block from Timeseries
+% to array
+
+ki_list=0.4:0.01:0.8; %range of ki
+% ki_list=0.35:0.01:0.6; %range of ki for only one chosen Ts 
+w=zeros(size(ki_list,2),2); %array of final values of integral of square error
+figure;
+for i= 1:size(Ts_list,2)
+    
+Ts = Ts_list(i)
+sys_d = c2d(sys_c,Ts); % discrete transfer fcn for object
+% extracting numerators and denominators
+[d_numerator, d_denominator] = tfdata(sys_d, 'v');
+
+%------------Q(ki) with kp and Ts as parameter-----------%
+figure;
+
+for j= 1:size(ki_list,2)
+ki=ki_list(j);
+sim('z4_discPI.slx');
+%txt = ['ki = ',num2str(ki)]; 
+hold on
+grid on
+%plot(ans.uchyb2,'DisplayName',txt); %error plots depending on ki
+w(j,1)=ans.uchyb2(end,1);
+w(j,2)=ki;
+end 
+% xlim([49.7 50])% limiting x axis
+% legend show;
+% hold off;
+[y,x]= min(w)
+minimum = [w(x(1),2),y(1)] % smallest value of x
+txt = ['Ts = ',num2str(Ts),', min = ',num2str(minimum(2))];
+plot(w(:,2),w(:,1),'-*','DisplayName',txt); % plot function 
+point = plot(minimum(1),minimum(2),'x'); % mark on the plot the min points
+hold on;
+grid on
+xlabel('ki')
+ylabel('Q(ki)')
+point.Annotation.LegendInformation.IconDisplayStyle = 'off';
+legend;
+
+%w(:,1) - first column of vector w (y coordinates)
+%w(:,2) - seond column of vector w (x coordinates)
+
+
+%---------------------------END--------------------------%
+
+end
+
+%---------------------------END--------------------------%

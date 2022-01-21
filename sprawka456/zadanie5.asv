@@ -9,14 +9,18 @@ clear all;
 theta_r = [0.6;0.8;0.5;0.9];
 N=10000;
 U = rand(N,1)*20;
-P=eye(4);
+P=eye(3);
 theta = [0;0;0;0];
-Y=zeros(N,1);
-
-for i=2:1:N
-    phi = [Y();Y(i-1);U(i-1);U(i)] 
-    Y(i) = (phi')*theta_r+rand()-0.5;
+Y=0;
+V = [0;0];
+for i=2:1:N  
+    phi = [V(1);V(2);U(i);U(i-1)]; %wektor pionowy
+    Y = (phi')*theta_r+rand()-0.5;
     P = P-(P*phi*(phi')*P)/(1+(phi')*P*phi);
-    theta = theta+P*phi*(Y(i)-(phi')*theta);
+    theta = theta+P*phi*(Y-(phi')*theta);
+    V(2) = V(1);
+    V(1) = phi;
+    
 end
 theta'
+
