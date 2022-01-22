@@ -7,8 +7,8 @@
 clear all;
 clc
 theta_r = [0.6;0.8;0.5;0.9]; %rzeczywiste theta
-lambda = 1;
-N=1000; %liczba probek
+lambda = 0.98;
+N=15000; %liczba probek
 U = rand(N,1)*20;
 %t = 0:1:N-1;
 %U = sin(t);
@@ -25,12 +25,12 @@ phi = [0;0;0;0];
 a1_error = zeros(1,N);
 noise = normrnd(0,1,[1,N]);
 for n=2:1:N
-%     if n==300 %po pewnym czasie zmienia sie parametr a1
-%         theta_r(1)=theta_r(1)+0.1;
-%     end
+     if n==1000 %po pewnym czasie zmienia sie parametr a1
+         theta_r(1)=theta_r(1)+0.2;
+     end
     phi = [Y(n);Y(n-1);U(n);U(n-1)];
-    %Y(n) = (phi')*theta_r+normrnd(0,1); %normrnd(0,1) to szum o rozkladzie normalnym [NIEskorelowany]
-    Y(n) = (phi')*theta_r+0.4*noise(n)+0.6*noise(n-1); %normrnd(0,1) to szum o rozkladzie normalnym [skorelowany]
+    Y(n) = (phi')*theta_r+noise(n); %normrnd(0,1) to szum o rozkladzie normalnym [NIEskorelowany]
+    %Y(n) = (phi')*theta_r+0.4*noise(n)+0.6*noise(n-1); %normrnd(0,1) to szum o rozkladzie normalnym [skorelowany]
     P = (P-(P*phi*(phi')*P)/(lambda+(phi')*P*phi))/lambda;
     theta = theta+P*phi*(Y(n)-(phi')*theta);
     a1(n) = theta(1);
@@ -59,12 +59,11 @@ figure
 hold on;
 grid on;
 plot (1:N,a1_error);
-plot (1:N,a2-theta_r(2));
-plot (1:N,b1-theta_r(3));
-plot (1:N,b2-theta_r(4));
-%plot (1:N,error);
+%plot (1:N,a2-theta_r(2));
+%plot (1:N,b1-theta_r(3));
+%plot (1:N,b2-theta_r(4));
 txt = ['Theta estimated with ',num2str(N),' samples']; % changing nuber to char to display it in legend
-a1=['a1*=0.6->0.7, estimation error =',num2str(a1_error(n))];
+a1=['a1*=0.6, estimation error =',num2str(a1_error(n))];
 a2=['a2*=0.8, estimation error =',num2str(a2(n)-0.8)];
 b1=['b1*=0.5, estimation error =',num2str(b1(n)-0.5)];
 b2=['b2*=0.9, estimation error =',num2str(b2(n)-0.9)];
