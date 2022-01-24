@@ -31,7 +31,7 @@ K= lqr(sys,Q,R);
 x0= [0;0;0;1];
 y0= [2;0;0;0];
 
-out=sim('sim6_1.slx');
+out=sim('zadanie6.slx');
 %plot
 %figure('Renderer', 'painters', 'Position', [10 10 900 300]);
 figure();
