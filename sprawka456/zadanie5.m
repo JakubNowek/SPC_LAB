@@ -1,13 +1,7 @@
-% a1=1;a2=3;b0=3;b1=2; % parametry theta
-% theta = [a1;a2;b0;b1]
-% n=1:1:10000; %10000 próbek
-% Un = rand(1,size(n,2)); %wejściowy sygnał jednostajny n próbek;
-
-%--------------------------------------------------------------------------
 clear all;
 clc
 theta_r = [0.6;0.8;0.5;0.9]; %rzeczywiste theta
-lambda = 0.98;
+lambda = .98;
 N=15000; %liczba probek
 U = rand(N,1)*20;
 %t = 0:1:N-1;
@@ -29,15 +23,15 @@ for n=2:1:N
          theta_r(1)=theta_r(1)+0.2;
      end
     phi = [Y(n);Y(n-1);U(n);U(n-1)];
-    Y(n) = (phi')*theta_r+noise(n); %normrnd(0,1) to szum o rozkladzie normalnym [NIEskorelowany]
-    %Y(n) = (phi')*theta_r+0.4*noise(n)+0.6*noise(n-1); %normrnd(0,1) to szum o rozkladzie normalnym [skorelowany]
+    %Y(n) = (phi')*theta_r+noise(n); %normrnd(0,1) to szum o rozkladzie normalnym [NIEskorelowany]
+    Y(n) = (phi')*theta_r+0.4*noise(n)+0.6*noise(n-1); %normrnd(0,1) to szum o rozkladzie normalnym [skorelowany]
     P = (P-(P*phi*(phi')*P)/(lambda+(phi')*P*phi))/lambda;
     theta = theta+P*phi*(Y(n)-(phi')*theta);
     a1(n) = theta(1);
     a2(n) = theta(2);
     b1(n) = theta(3);
     b2(n) = theta(4);
-    a1_error(n) = theta(1)-theta_r(1);
+    a1_error(n) = abs(theta(1)-theta_r(1));
 end
 theta'
 % figure
@@ -59,13 +53,13 @@ figure
 hold on;
 grid on;
 plot (1:N,a1_error);
-%plot (1:N,a2-theta_r(2));
-%plot (1:N,b1-theta_r(3));
-%plot (1:N,b2-theta_r(4));
+%plot (1:N,abs(a2-theta_r(2)));
+%plot (1:N,abs(b1-theta_r(3)));
+%plot (1:N,abs(b2-theta_r(4)));
 txt = ['Theta estimated with ',num2str(N),' samples']; % changing nuber to char to display it in legend
-a1=['a1*=0.6, estimation error =',num2str(a1_error(n))];
-a2=['a2*=0.8, estimation error =',num2str(a2(n)-0.8)];
-b1=['b1*=0.5, estimation error =',num2str(b1(n)-0.5)];
-b2=['b2*=0.9, estimation error =',num2str(b2(n)-0.9)];
-legend(a1,a2,b1,b2,'Location','SE')
+a1=['a1*=0.6->0.8, estimation error =',num2str(a1_error(n))];
+a2=['a2*=0.8, estimation error =',num2str(abs(a2(n)-0.8))];
+b1=['b1*=0.5, estimation error =',num2str(abs(b1(n)-0.5))];
+b2=['b2*=0.9, estimation error =',num2str(abs(b2(n)-0.9))];
+legend(a1,a2,b1,b2,'Location','NE')
 title(txt);
